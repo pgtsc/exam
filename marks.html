@@ -45,14 +45,28 @@
             animation: load 0.8s linear infinite;
         }
 
-        /* টপ ব্যানার */
         .top_container {
-            background: var(--primary-gradient);
+            background: linear-gradient(
+                -45deg,
+                #11998e,
+                #38ef7d,
+                #00b4db,
+                #11998e
+            );
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
             box-shadow: 0 4px 20px rgba(17, 153, 142, 0.3);
             border-radius: 0 0 24px 24px;
         }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%;}
+            50% { background-position: 100% 50%; }
+            100% {   background-position: 0% 50%; }
+        }
+
         #logo {
-            height: 70px; width: 70px;
+            height: 80px; width: 80px;
             border-radius: 50%;
             border: 3px solid rgba(255, 255, 255, 0.6);
             box-shadow: var(--card-shadow);
@@ -168,6 +182,8 @@
 
         @keyframes load { 100% { transform: rotate(360deg); } }
 
+        .location_txt { font-size: inherit;}
+
         @media screen and (max-width: 768px) {
             .heading_txt { font-size: 1.2rem; text-align: center; }
             #logo { height: 55px; width: 55px; }
@@ -176,6 +192,7 @@
             .countdown span:first-child { font-size: 18px; }
             .table td, .table th { padding: 10px 6px; font-size: 13px; }
             .mark_input { width: 65px; padding: 5px; font-size: 13px; }
+            .location_txt { font-size: 0.8rem;}
         }
     </style>
     <title>Marks Entry</title>
@@ -184,11 +201,12 @@
 
   <div class="loader"><div class="circular_loader"></div></div>
 
-  <div class="top_container container-fluid px-3 py-4 mb-4">
+  <div class="top_container container-fluid px-3 py-3 mb-4">
         <div class="row">
-            <div class="col-12 d-flex flex-column flex-sm-row justify-content-center align-items-center text-white heading_txt fw-bold gap-3">
+            <div class="col-12 d-flex flex-column flex-sm-row justify-content-center align-items-center text-white heading_txt fw-bold gap-1">
               <img id="logo" src="logo.jpg" alt="Logo"/>
               <div class="text-center text-sm-start">পীরগঞ্জ সরকারি টেকনিক্যাল স্কুল ও কলেজ</div>
+              <div class="text-center text-sm-start location_txt"> পীরগঞ্জ, ঠাকুরগাঁও </div>
              </div>
         </div>    
   </div>
@@ -197,7 +215,7 @@
     <div class="row g-3">
       <div class="col-12">
           <div class="notice-box">
-              <div>বার্ষিক পরীক্ষার নম্বর ও ধারাবাহিক নম্বর সমুহ জমা দানের সময় ০৮/১২/২০২৬ তারিখ পর্যন্ত বর্ধিত করা হয়েছে। এ সময়ের মধ্যে সকলেই submit করবেন। </div>
+              <div>বার্ষিক পরীক্ষার নম্বর ও ধারাবাহিক নম্বরসমুহ জমা দানের সময় ০৮/১২/২০২৬ তারিখ পর্যন্ত বর্ধিত করা হয়েছে। এ সময়ের মধ্যে সকলকে submit করার জন্য বলা হইল। </div>
           </div>
       </div>
       <div class="col-12 d-flex flex-column align-items-center my-2">
@@ -259,8 +277,8 @@
                   <th width="8%">SL</th>
                   <th width="20%">রোল নম্বর</th>
                   <th width="40%">পরীক্ষার্থীর নাম</th>
-                  <th width="16%" class="text-center">প্রাপ্ত নম্বর</th>
-                  <th width="16%" class="text-center">TC নম্বর</th>
+                  <th width="16%" class="text-center">চুড়ান্ত নম্বর</th>
+                  <th width="16%" class="text-center">ধারাবাহিক নম্বর</th>
                 </tr>
               </thead>
               <tbody id="mytbody">
@@ -361,12 +379,10 @@
        for (let i = 0; i < dta.length; i++) {
             var student = dta[i];
             if (student) {
-                // চেক করা হচ্ছে এটি শেষ রো (পূর্ণ নম্বর) কিনা
                 if (i === dta.length - 1) {
                     rowsHtml += `<tr class="table-danger font-weight-bold"> 
                         <td colspan="3" class="text-center fw-bold text-danger">প্রশ্নপত্রের পূর্ণ নম্বর</td>
-                        <td colspan="2" class="text-center"><input class="mark_input border-danger mark-val" type="text" value="${student.mark || ''}" placeholder="পূর্ণ নম্বর"></td>
-                
+                        <td colspan="2" class="text-center"><input class="mark_input border-danger mark-val" type="text" value="${student.mark || ''}" placeholder="পূর্ণ নম্বর"></td>   
                     </tr>`;
                 } else {
                     rowsHtml += 
@@ -374,7 +390,7 @@
                         <td><span class="badge bg-light text-dark border p-2">${i+1}</span></td>
                         <td class="fw-bold text-secondary">${student.roll || ''}</td>
                         <td>${student.name || ''}</td>
-                        <td class="text-center"><input class="mark_input mark-val" type="text" value="${student.mark !== undefined ? student.mark : ''}" placeholder="নম্বর"></td>
+                        <td class="text-center"><input class="mark_input mark-val" type="text" value="${student.mark !== undefined ? student.mark : ''}" placeholder="TF"></td>
                         <td class="text-center"><input class="mark_input att-val" type="text" value="${student.tc !== undefined ? student.tc : ''}" placeholder="TC"></td>
                       </tr>`;
                 }
@@ -392,8 +408,6 @@
   
   async function submitMarks(){
     document.querySelector(".loader").style.display = "flex";
-    
-    // প্রতিটি শিক্ষার্থীর মার্কস এবং হাজিরা নম্বর আলাদা অ্যারেতে সংগ্রহ করা হচ্ছে
     var rows = document.querySelectorAll("#mytbody tr");
     var marksData = [];
     var tcData = [];
@@ -401,28 +415,19 @@
     rows.forEach(row => {
         var markInput = row.querySelector(".mark-val");
         var attInput = row.querySelector(".att-val");
-        
-        if (markInput && attInput) {
-            marksData.push([markInput.value]);
-            tcData.push([attInput.value]);
-        }
+
+        if (markInput) {marksData.push([markInput.value]);}
+        if (attInput) { tcData.push([attInput.value]); } 
     });
 
     try {
-        await fetch(API_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                class: selectCls.value,
-                section: selectSec.value,
-                subject: selectSub.value,
-                marks: marksData,
-                tc: tcData
+        await fetch(API_URL, { method: "POST",
+            body: JSON.stringify({ class: selectCls.value,   section: selectSec.value, subject: selectSub.value,
+                marks: marksData,  tc: tcData
             })
         });
         showSuccessfullMsg();
-    } catch (error) {
-        console.error(error);
-        alert("মার্কস ও TC নম্বর সাবমিট করা যায়নি!");
+    } catch (error) { console.error(error);  alert("মার্কস ও TC নম্বর সাবমিট করা যায়নি!");
         removeLoader();
     }
   }
