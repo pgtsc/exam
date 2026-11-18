@@ -381,8 +381,9 @@
             if (student) {
                 if (i === dta.length - 1) {
                     rowsHtml += `<tr class="table-danger font-weight-bold"> 
-                        <td colspan="3" class="text-center fw-bold text-danger">প্রশ্নপত্রের পূর্ণ নম্বর</td>
-                        <td colspan="2" class="text-center"><input class="mark_input border-danger mark-val" type="text" value="${student.mark || ''}" placeholder="পূর্ণ নম্বর"></td>   
+                        <td colspan="3" class="text-center fw-bold text-danger">পূর্ণ নম্বর</td>
+                        <td class="text-center"><input class="mark_input border-danger mark-val" type="text" value="${student.mark || ''}" placeholder="0"></td>   
+                        <td class="text-center"><input class="mark_input border-danger att-val" type="text" value="${student.tc || ''}" placeholder="0"></td>   
                     </tr>`;
                 } else {
                     rowsHtml += 
@@ -415,9 +416,10 @@
     rows.forEach(row => {
         var markInput = row.querySelector(".mark-val");
         var attInput = row.querySelector(".att-val");
-
-        if (markInput) {marksData.push([markInput.value]);}
-        if (attInput) { tcData.push([attInput.value]); } 
+        if (markInput && attInput) {
+            marksData.push([markInput.value]);
+            tcData.push([attInput.value]);
+        }
     });
 
     try {
